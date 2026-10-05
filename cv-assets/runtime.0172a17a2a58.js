@@ -173,7 +173,7 @@ function showView({initial=false,keepModeFocus=false}={}){
   const brand=document.querySelector('.brand');brand.href='#'+lang+(mode==='team'?'-team-cv':'');brand.setAttribute('aria-label',(mode==='team'?'Stacklevel':text[lang].name)+(lang==='ru'?' — главная':' — home'));
   document.querySelector('[data-brand-name]').textContent=text[lang].name;
   document.querySelector('[data-brand-name]').hidden=mode==='team';
-  document.querySelector('[data-team-logo]').hidden=mode!=='team';
+  document.querySelector('[data-team-logo]').toggleAttribute('hidden',mode!=='team');
   document.querySelector('.brand-mark').hidden=mode==='team';
   document.querySelector('.brand-mark').textContent=lang==='ru'?'АС':'AS';
   document.querySelector('.page-nav').setAttribute('aria-label',lang==='ru'?'Разделы резюме':'CV sections');
