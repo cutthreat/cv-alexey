@@ -486,7 +486,7 @@ html[data-presentation=team] .secondary-button:hover{background:#eef4ff;border-c
 .solution-card dt{font-size:.75rem;line-height:1.5;font-weight:650;color:#617083;margin:0 0 6px}
 .solution-card dd{font-size:.875rem;line-height:1.75;margin:0;color:#425168}
 .solution-link{display:inline-flex;align-items:center;gap:8px;min-height:44px;max-width:100%;color:#1754b8;font-size:.8125rem;line-height:1.55;font-weight:600;text-decoration:underline;text-underline-offset:4px}
-.solution-card>.solution-link{margin-top:auto;align-self:flex-start}
+.solution-card>.solution-link,.solution-card .mobile-fold-body>.solution-link{margin-top:auto;align-self:flex-start}
 .team-delivery-entry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;padding:22px 24px;margin-bottom:16px;border:1px solid #c9d9f1;border-radius:12px;background:#f5f8fd}
 .team-delivery-entry h3{color:#162238;font-size:1.0625rem;line-height:1.45;font-weight:650;margin:0 0 8px}
 .team-delivery-entry p{color:#536174;font-size:.875rem;line-height:1.75;margin:0;max-width:680px}
@@ -589,7 +589,7 @@ html[data-presentation=team] .related a{border-color:#dce2ea}
 @media(prefers-reduced-motion:reduce){body,.site-header,.mode-track,.mode-thumb{transition:none}}
 @media(forced-colors:active){.mode-track,.mode-thumb{border:1px solid ButtonText}.mode-control[aria-checked=true] .mode-track{background:Highlight}.solution-card,.team-contact-note,.ai-audit,.ai-scenario,.team-project-details{border:1px solid CanvasText}}
 @media(forced-colors:active){.team-delivery-entry,.delivery-responsibility{border:1px solid CanvasText}}
-@media print{.mode-control{display:none!important}.team-hero{padding:0 0 12pt}.team-hero-layout,.ai-audit-intro{display:block}.team-hero h1{font-size:25pt;color:#111}.team-lead,.team-hero-note,.team-section-head p{color:#222;font-size:10pt}.team-contact-note,.team-range,.team-hero .hero-actions,.ai-audit-intro .contact-button,.team-final .contact-button{display:none}.team-section{margin:0 0 14pt}.team-section-head h2,.ai-audit h2,.team-final h2{font-size:15pt;color:#111}.solution-grid,.ai-scenarios,.century-capabilities,.team-members,.team-steps{display:block}.solution-card,.ai-scenario,.team-member,.team-steps li{padding:8pt 0;border:0;border-bottom:1px solid #ccc;background:white;break-inside:avoid}.solution-card h3,.ai-scenario h3,.team-member h3,.team-steps h3{font-size:11pt;min-height:0;color:#111}.solution-card dd,.ai-scenario p,.team-steps p,.team-member>p{color:#222;font-size:9pt}.solution-card dl>div+div{border:0;padding:0;margin-top:6pt}.solution-card>.solution-link,.team-project-details{display:none}.ai-audit{padding:12pt;border-color:#ccc;background:white}.century-panel{margin-top:12pt;padding-top:12pt}.century-capabilities li{margin-bottom:8pt;break-inside:avoid}.audit-output{display:block}.team-final{display:block;padding:8pt 0}.team-final p{color:#222;font-size:9pt}}
+@media print{.mode-control{display:none!important}.team-hero{padding:0 0 12pt}.team-hero-layout,.ai-audit-intro{display:block}.team-hero h1{font-size:25pt;color:#111}.team-lead,.team-hero-note,.team-section-head p{color:#222;font-size:10pt}.team-contact-note,.team-range,.team-hero .hero-actions,.ai-audit-intro .contact-button,.team-final .contact-button{display:none}.team-section{margin:0 0 14pt}.team-section-head h2,.ai-audit h2,.team-final h2{font-size:15pt;color:#111}.solution-grid,.ai-scenarios,.century-capabilities,.team-members,.team-steps{display:block}.solution-card,.ai-scenario,.team-member,.team-steps li{padding:8pt 0;border:0;border-bottom:1px solid #ccc;background:white;break-inside:avoid}.solution-card h3,.ai-scenario h3,.team-member h3,.team-steps h3{font-size:11pt;min-height:0;color:#111}.solution-card dd,.ai-scenario p,.team-steps p,.team-member>p{color:#222;font-size:9pt}.solution-card dl>div+div{border:0;padding:0;margin-top:6pt}.solution-card>.solution-link,.solution-card .mobile-fold-body>.solution-link,.team-project-details{display:none}.ai-audit{padding:12pt;border-color:#ccc;background:white}.century-panel{margin-top:12pt;padding-top:12pt}.century-capabilities li{margin-bottom:8pt;break-inside:avoid}.audit-output{display:block}.team-final{display:block;padding:8pt 0}.team-final p{color:#222;font-size:9pt}}
 @media print{.team-delivery-entry,.delivery-contact{display:none}.stacklevel-delivery{padding-top:10pt}.delivery-company{padding:6pt 0;margin-bottom:10pt}.delivery-capability-grid,.delivery-roles{display:block}.delivery-capability,.delivery-roles article{padding:6pt 0;break-inside:avoid}.delivery-capability h3,.delivery-responsibility>h3{font-size:11pt;color:#111}.delivery-capability p,.delivery-roles p,.delivery-product p{font-size:9pt;color:#222}.delivery-responsibility{margin-top:8pt;padding:10pt;border-color:#ccc;background:white}.delivery-responsibility>h3{margin-bottom:6pt}.delivery-product{padding-top:10pt;margin-top:10pt}}
 
 /* Shared 12-column layout. Bootstrap 5.3 breakpoints and container widths;
@@ -737,7 +737,7 @@ html[data-presentation=team] .matrix-cat{color:#596777}
 @media print{.matrix-intro,.matrix-overlay,.matrix-footer,.matrix-entry-open,.matrix-live{display:none!important}.matrix-shifting .shell{filter:none!important;animation:none!important}}
 
 /* A compact reading surface, with native disclosures and one floating control. */
-.mobile-menu-pill,.mobile-shortcuts{display:none}
+.mobile-menu-pill,.mobile-shortcuts,.experience-note-mobile{display:none}
 .mobile-need-link{color:inherit;text-decoration:none}.mobile-need-link>span{display:none}
 .mobile-menu{--pill-color:#a91e38;border:1px solid var(--line);border-radius:24px;padding:24px;background:var(--bg);color:var(--text);width:calc(100% - 32px);max-width:440px;max-height:calc(100dvh - 32px);overflow:auto;overscroll-behavior:contain}
 .mobile-menu::backdrop{background:rgba(0,0,0,.7)}
@@ -789,6 +789,7 @@ html[data-presentation=team] .matrix-cat{color:#596777}
  .personal-presentation>.section,.personal-presentation>.working,.personal-presentation>.confidentiality,
  .team-presentation>.team-section,.team-final{margin:0 0 var(--mobile-space);padding:0}
  .profile-note,.team-contact-note{padding:0;border:0;background:none}
+ .experience-note-desktop{display:none}.profile-note .experience-note-mobile{display:block;margin:16px 0 0}
  .mobile-fold{border:1px solid var(--line);border-radius:16px;background:var(--panel);min-width:0;overflow:clip}
  .mobile-fold>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px;min-height:80px;cursor:pointer;list-style:none;color:var(--text)}
  .mobile-fold>summary::-webkit-details-marker{display:none}

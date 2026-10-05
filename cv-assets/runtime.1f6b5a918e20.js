@@ -440,7 +440,19 @@ mobileMenuTrigger.addEventListener('click',()=>{
 mobileMenu.querySelector('[data-mobile-menu-close]').addEventListener('click',()=>closeMobileMenu());
 mobileMenu.addEventListener('cancel',event=>{event.preventDefault();closeMobileMenu();});
 mobileMenu.addEventListener('click',event=>{
- const link=event.target.closest('a');if(link){closeMobileMenu({restoreFocus:false});if(link.hash&&link.hash===location.hash){const target=document.getElementById(link.hash.slice(1));mobileReveal(target);target?.scrollIntoView({block:'start',behavior:'instant'});}}
+ const link=event.target.closest('a');
+ if(link){
+  closeMobileMenu({restoreFocus:false});
+  if(link.hash&&link.hash===location.hash){
+   event.preventDefault();
+   const target=document.getElementById(decodeURIComponent(link.hash.slice(1)));
+   if(target){
+    mobileReveal(target);target.scrollIntoView({block:'start',behavior:'instant'});
+    const heading=target.querySelector('h1,h2')||target;
+    heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});
+   }
+  }
+ }
  const button=event.target.closest('[data-mobile-mode]');
  if(button){closeMobileMenu({restoreFocus:false});requestPresentation(button.dataset.mobileMode);}
 });
