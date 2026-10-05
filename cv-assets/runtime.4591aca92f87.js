@@ -145,11 +145,18 @@ function updateCaseNavigation(target){
   });
 }
 
+function ensureCaseView(key){
+  if(!/^(ru|en)-case-\d+$/.test(key)||document.getElementById(key))return;
+  const source=document.querySelector(`[data-case-template="${key}"]`);
+  if(source)source.before(source.content.firstElementChild.cloneNode(true));
+}
+
 function showView({initial=false,keepModeFocus=false}={}){
   const oldMode=presentationMode();
   let key;
   try{key=decodeURIComponent(location.hash.slice(1))||DEFAULT_LANGUAGE;}catch{key=DEFAULT_LANGUAGE;history.replaceState(null,'','#'+key);}
   key=key.replace(/^(ru|en)-(?:personal-projects|solutions(?:-group)?)$/,'$1-results').replace(/^(ru|en)-(?:case-(?:35|36)|practical)$/,'$1-skills');
+  ensureCaseView(key);
   let requested=document.getElementById(key);
   let target=requested?.classList.contains('view')?requested:requested?.closest('main.view');
   if(!target){key=DEFAULT_LANGUAGE;target=document.getElementById(key);requested=target;history.replaceState(null,'','#'+key);}
@@ -322,7 +329,7 @@ function requestPresentation(next,{fromIntro=false,animate=true}={}){
   matrixRemember();showView({keepModeFocus:true});syncMatrixWords();
  };
  const finish=()=>{
-  const target=fromIntro?document.querySelector('#'+lang+' .'+(next==='team'?'team':'personal')+'-presentation h1'):document.querySelector('[data-mode-switch]');
+  const target=fromIntro?document.querySelector('#'+lang+' .'+(next==='team'?'team':'personal')+'-presentation h1'):document.querySelector(matrixMobile.matches?'[data-mobile-menu-open]':'[data-mode-switch]');
   target?.focus({preventScroll:true});
   document.querySelector('[data-matrix-live]').textContent=matrixWords[lang][next];
  };
@@ -362,6 +369,7 @@ const mobileCVMedia=matchMedia('(max-width:767.98px)');
 const mobileMenu=document.getElementById('mobile-menu');
 const mobileMenuTrigger=document.querySelector('[data-mobile-menu-open]');
 const mobileFoldPanels=Array.from(document.querySelectorAll('[data-mobile-fold]'));
+let mobileHeaderVisible=true;
 const mobileCopy={
  ru:{menu:'Меню',close:'Закрыть меню',personal:'Мой опыт',team:'Решения команды',home:'К началу',contact:'Написать Алексею в Telegram',company:'Написать в Stacklevel',continue:'Продолжить с Алексеем в Telegram',contextPersonal:'Кейсы и работа с Алексеем',contextTeam:'Stacklevel · команда под ваш проект',language:'Язык',sections:'Разделы',format:'Формат работы'},
  en:{menu:'Menu',close:'Close menu',personal:'My experience',team:'Team solutions',home:'Back to top',contact:'Message Alexey on Telegram',company:'Contact Stacklevel',continue:'Continue with Alexey on Telegram',contextPersonal:'Cases and delivery with Alexey',contextTeam:'Stacklevel · your project team',language:'Language',sections:'Sections',format:'Delivery format'}
@@ -418,6 +426,7 @@ function setMobileFoldLayout(){
  }
  if(!mobileCVMedia.matches){closeMobileMenu({restoreFocus:false});document.documentElement.classList.remove('mobile-scrolled');}
  else{
+  document.documentElement.classList.toggle('mobile-scrolled',!mobileHeaderVisible);
   const key=decodeURIComponent(location.hash.slice(1));
   if(key&&!['ru','en'].includes(key))mobileReveal(document.getElementById(key));
  }
@@ -446,7 +455,8 @@ document.querySelectorAll('[data-mobile-filter]').forEach(link=>link.addEventLis
 // Observe once; no per-scroll layout read and no sticky bar over the content.
 if('IntersectionObserver' in window){
  const headerObserver=new IntersectionObserver(entries=>{
-  document.documentElement.classList.toggle('mobile-scrolled',mobileCVMedia.matches&&!entries[0].isIntersecting);
+  mobileHeaderVisible=entries[0].isIntersecting;
+  document.documentElement.classList.toggle('mobile-scrolled',mobileCVMedia.matches&&!mobileHeaderVisible);
  },{threshold:0});headerObserver.observe(document.querySelector('.site-header'));
 }else{
  let mobileScrollScheduled=false;
