@@ -827,5 +827,9 @@ html[data-presentation=team] .matrix-cat{color:#596777}
  .detail{padding-top:0}.detail-block{padding-block:24px}.detail .case-summary{margin-bottom:24px}
  .detail .solution-figure{margin-block:24px}
 }
-@media screen and (min-width:768px){.mobile-fold{border:0;background:none}.mobile-fold-body{display:contents}}
+@media screen and (min-width:768px){
+ .mobile-fold{border:0;background:none}.mobile-fold-body{display:contents}
+ .solution-card>[data-mobile-fold]{display:flex;flex-direction:column;flex:1}
+ .solution-card>[data-mobile-fold]>.mobile-fold-body{display:flex;flex-direction:column;flex:1}
+}
 @media print{.mobile-menu,.mobile-menu-pill,.mobile-shortcuts,.mobile-fold>summary{display:none!important}.mobile-fold,.mobile-fold-body{display:contents}}
