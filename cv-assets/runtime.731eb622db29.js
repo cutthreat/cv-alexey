@@ -272,6 +272,7 @@ function syncMatrixWords(){
  const w=matrixWords[matrixLanguage()];
  const keys={'entry-name':'name','entry-kicker':'kicker','pill-personal':'personal','pill-team':'team','pill-personal-note':'personalNote','pill-team-note':'teamNote','entry-note':'note','entry-credit':'credit'};
  document.querySelector('[data-entry-hint]').textContent=matrixLanguage()==='ru'?'Выберите таблетку':'Choose a pill';
+ document.querySelector('[data-matrix-portrait]').setAttribute('alt',matrixLanguage()==='ru'?'Алексей в образе Морфиуса: очки, кожаный плащ, красная и синяя таблетки':'Alexey as Morpheus: sunglasses, a leather coat, and a red and blue pill');
  for(const [attribute,key] of Object.entries(keys))document.querySelector('[data-'+attribute+']').textContent=w[key];
  document.querySelector('[data-entry-title]').innerHTML=w.title;
  document.querySelector('[data-entry-close]').setAttribute('aria-label',w.close);

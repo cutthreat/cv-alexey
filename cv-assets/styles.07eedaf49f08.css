@@ -319,8 +319,8 @@ h2{font-size:1.875rem;font-weight:650;letter-spacing:-.035em}
 .partner-project h4{display:flex;align-items:center;font-size:1.0625rem;font-weight:650;line-height:1.45;letter-spacing:-.015em;color:var(--partner-ink);margin:0 0 10px;min-height:44px}
 .partner-project h4 a{display:inline-flex;align-items:center;min-height:44px;gap:6px;color:var(--partner-link);text-decoration:underline}
 .partner-project p,.partner-project p:last-child{font-size:.875rem;line-height:1.7;color:var(--partner-copy);margin:0}
-.partner-project .partner-contribution{margin-top:16px;padding-top:14px;border-top:1px solid var(--partner-line)}
-.partner-contribution strong{display:block;margin-bottom:5px;font-size:.75rem;font-weight:650;color:var(--partner-ink)}
+.partner-project-role{margin-top:16px;padding-top:14px;border-top:1px solid var(--partner-line)}
+.partner-project-role h5{display:block;min-block-size:0;min-height:0;margin:0 0 8px;font-size:.75rem;line-height:1.5;font-weight:650;color:var(--partner-ink)}
 .partner-history{margin-top:20px;border:1px solid var(--partner-line-strong);border-radius:10px;background:var(--partner-surface)}
 .partner-history>summary{display:flex;align-items:center;gap:12px;min-height:52px;padding:14px 18px;box-sizing:border-box;list-style:none;font-size:.8125rem;line-height:1.5;font-weight:600;color:var(--partner-ink);cursor:pointer}
 .partner-history>summary::-webkit-details-marker{display:none}
@@ -617,6 +617,22 @@ html[data-presentation=team] .related a{border-color:#dce2ea}
   }
   .casegrid>.case.flagship{grid-column:1/-1}
   .casegrid,.automation-grid,.solution-grid,.partner-projects{align-items:stretch}
+  /* Every selected project has the same five reserved fields at each breakpoint. */
+  .partner-projects>.partner-project{
+    --project-title-slot:3.25rem;--project-description-slot:7.5rem;--project-role-slot:9rem;
+    display:grid;grid-template-columns:minmax(0,1fr);
+    grid-template-rows:2.25rem 2.5rem var(--project-title-slot) var(--project-description-slot) var(--project-role-slot);
+    grid-template-areas:"category" "status" "title" "description" "role";
+    gap:8px;padding:20px;align-content:start;align-items:start
+  }
+  .partner-project>.partner-category{grid-area:category;display:block;min-width:0}
+  .partner-project>.partner-status{grid-area:status;min-width:0}
+  .partner-project>.partner-project-title{grid-area:title;display:block;min-height:0;margin:0;line-height:1.45}
+  .partner-project>.partner-project-title a{display:flex;align-items:flex-start;min-height:44px;gap:6px;line-height:inherit}
+  .partner-project-title a>span{flex-shrink:0}
+  .partner-project>.partner-project-description{grid-area:description}
+  .partner-project>.partner-project-role{grid-area:role;align-self:stretch;min-height:0;margin:0;padding-top:12px;border-top:1px solid var(--partner-line)}
+  .partner-projects .partner-project p{font-size:.875rem;line-height:1.7;margin:0}
   .work-steps,.team-steps,.team-members,.century-capabilities,.delivery-capability-grid,.delivery-roles{row-gap:32px}
   /* Remove legacy absolute positioning: each number occupies its own line. */
   .work-steps li::before,.team-steps li::before{position:static;inset:auto;display:block;width:auto;height:auto;margin:0 0 12px;line-height:1.4;transform:none}
@@ -644,6 +660,7 @@ html[data-presentation=team] .related a{border-color:#dce2ea}
   .shell{max-width:720px}
   .casegrid>*{grid-column:span 6}
   .needs-grid>*{grid-column:span 4}
+  .partner-projects>.partner-project{--project-description-slot:6rem;--project-role-slot:7.5rem}
 }
 @media screen and (min-width:992px){
   :root{--section-gap:64px}
@@ -654,10 +671,17 @@ html[data-presentation=team] .related a{border-color:#dce2ea}
   .automation-grid>*,.skills>*,.solution-grid>*,.team-members>*{grid-column:span 4}
   .team-final{flex-direction:row;align-items:center}
   .team-final>.team-contact-actions{flex:0 0 310px;width:auto}
+  .partner-projects>.partner-project{--project-description-slot:5rem;--project-role-slot:6.5rem}
 }
 @media screen and (min-width:1200px){
   .shell{max-width:1140px}
   .work-steps>*,.team-steps>*{grid-column:span 3}
+}
+@media screen and (max-width:767.98px){
+  .partner-projects>.partner-project{grid-column:span 12;padding:16px}
+}
+@media screen and (max-width:359.98px){
+  .partner-projects>.partner-project{--project-title-slot:3.5rem;--project-description-slot:8rem;--project-role-slot:10rem}
 }
 /* A three-row header below lg leaves room for both the mode switch and navigation. */
 @media screen and (max-width:991.98px){
