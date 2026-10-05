@@ -271,6 +271,7 @@ function matrixChosen(){try{return sessionStorage.getItem('cv-matrix-choice-v1')
 function syncMatrixWords(){
  const w=matrixWords[matrixLanguage()];
  const keys={'entry-name':'name','entry-kicker':'kicker','pill-personal':'personal','pill-team':'team','pill-personal-note':'personalNote','pill-team-note':'teamNote','entry-note':'note','entry-credit':'credit'};
+ document.querySelector('[data-entry-hint]').textContent=matrixLanguage()==='ru'?'Выберите таблетку':'Choose a pill';
  for(const [attribute,key] of Object.entries(keys))document.querySelector('[data-'+attribute+']').textContent=w[key];
  document.querySelector('[data-entry-title]').innerHTML=w.title;
  document.querySelector('[data-entry-close]').setAttribute('aria-label',w.close);
@@ -340,7 +341,7 @@ function openMatrixEntry(){
  syncMatrixWords();
  const img=document.querySelector('[data-matrix-portrait]');if(!img.hasAttribute('src')){if(img.dataset.srcset)img.srcset=img.dataset.srcset;img.src=img.dataset.src;}
  if(typeof matrixEntry.showModal==='function')matrixEntry.showModal();else return;
- document.querySelector('[data-entry-choice="personal"]').focus({preventScroll:true});
+ document.querySelector('[data-entry-title]').focus({preventScroll:true});
 }
 document.querySelector('[data-entry-open]').addEventListener('click',openMatrixEntry);
 document.querySelectorAll('[data-entry-choice]').forEach(button=>button.addEventListener('click',()=>requestPresentation(button.dataset.entryChoice,{fromIntro:true})));
