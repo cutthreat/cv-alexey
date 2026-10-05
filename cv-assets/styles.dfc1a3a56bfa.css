@@ -175,7 +175,7 @@ main.view:not(.detail){display:flow-root}
 }
 
 /* Refinements to the supplied visual language. No external assets or fonts. */
-:root{--bg:#121116;--panel:#1c1922;--text:#f6f3fa;--muted:#c2bacb;--accent:#d3b1f5;--line:#3a3246;--section-gap:64px;--page-pad:32px;--panel-pad:24px;color-scheme:dark}
+:root,.matrix-overlay[data-matrix-mode=personal]{--bg:#121116;--panel:#1c1922;--text:#f6f3fa;--muted:#c2bacb;--accent:#d3b1f5;--line:#3a3246;--section-gap:64px;--page-pad:32px;--panel-pad:24px;color-scheme:dark}
 html{scroll-padding-top:112px;scroll-behavior:smooth}
 body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
 .shell{max-width:1184px}
@@ -432,7 +432,7 @@ html{scroll-padding-top:144px}
 .mode-control[aria-checked=true] [data-mode-personal]{color:#626d7c;font-weight:500}
 .mode-control[aria-checked=true] [data-mode-team]{color:#162238;font-weight:650}
 .team-presentation:focus,.team-presentation .team-section:focus,.team-presentation h1:focus,.team-presentation h2:focus,.personal-presentation h2:focus{outline:none}
-html[data-presentation=team]{--bg:#fff;--panel:#f5f7fa;--text:#162238;--muted:#536174;--accent:#2165d9;--line:#dce2ea;color-scheme:light}
+html[data-presentation=team],.matrix-overlay[data-matrix-mode=team]{--bg:#fff;--panel:#f5f7fa;--text:#162238;--muted:#536174;--accent:#2165d9;--line:#dce2ea;color-scheme:light}
 body,.site-header{transition:background-color .2s ease,color .2s ease}
 html[data-presentation=team] body{background:#fff;color:#162238}
 html[data-presentation=team] .site-header{background:rgba(255,255,255,.98);border-color:#dce2ea}
@@ -711,21 +711,22 @@ html[data-presentation=team] .related a{border-color:#dce2ea}
 
 /* Matrix is a short interlude. The portfolio retains its approved themes. */
 .matrix-overlay[hidden],.matrix-entry-open{display:none}
-.matrix-overlay{position:fixed;inset:0;z-index:100;background:#020a05;pointer-events:auto;overflow:hidden;isolation:isolate}
+.matrix-overlay{position:fixed;inset:0;z-index:100;background:var(--bg);pointer-events:auto;overflow:hidden;isolation:isolate}
 .matrix-overlay canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.75}
-.matrix-overlay::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent,#020a0570);pointer-events:none}
+.matrix-overlay::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent,var(--bg));opacity:.45;pointer-events:none}
 .matrix-overlay.is-running{animation:matrix-shutter .92s cubic-bezier(.65,0,.35,1) both}
-.matrix-shifting .shell,.matrix-shifting .matrix-intro[open]{animation:matrix-invert .92s ease-in-out both}
-.matrix-terminal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(85vw,560px);z-index:1;color:#d7ffe6;text-align:center;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-shadow:0 0 24px #5aff9740}
-.matrix-terminal>span{display:block;font-size:.6875rem;letter-spacing:.16em;color:#84d79f;margin-bottom:12px}
+.matrix-shifting .shell{animation:matrix-context .92s ease-in-out both}
+.matrix-terminal{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(85vw,560px);z-index:1;color:var(--text);text-align:center;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;text-shadow:0 0 24px var(--bg)}
+.matrix-terminal>span{display:block;font-size:.6875rem;letter-spacing:.16em;color:var(--accent);margin-bottom:12px}
 .matrix-terminal>strong{display:block;font-size:clamp(1.5rem,5vw,2.5rem);line-height:1.25;font-weight:500;letter-spacing:-.04em}
 .matrix-cat-track{display:none;position:relative;overflow:hidden;height:58px;margin-top:18px}
 .matrix-overlay.is-dejavu .matrix-cat-track{display:block}
-.matrix-cat-track>span{position:absolute;top:4px;left:-80px;width:64px;color:#09180f;filter:drop-shadow(0 0 1px #88e4a0);animation:matrix-cat-pass .68s ease-in-out both}
+.matrix-cat-track>span{position:absolute;top:4px;left:-80px;width:64px;color:var(--text);filter:drop-shadow(0 0 1px var(--accent));animation:matrix-cat-pass .68s ease-in-out both}
+.matrix-cat-track svg [stroke]{stroke:var(--bg)}
 .matrix-cat-track>span:nth-child(2){animation-delay:.28s}
 .matrix-cat svg{width:34px;height:24px}
 .matrix-cat{display:grid;place-items:center;width:48px;height:44px;flex:0 0 48px;border:1px solid transparent;border-radius:8px;background:transparent;color:#817889;cursor:pointer;padding:4px}
-.matrix-cat:hover{color:#bee9cf;border-color:#464c49;background:#132319}
+.matrix-cat:hover{color:var(--accent);border-color:var(--line);background:var(--panel)}
 html[data-presentation=team] .matrix-cat{color:#596777}
 .matrix-footer{display:flex;align-items:center;gap:12px;width:100%;margin-top:4px}
 .matrix-footer p{font-size:.75rem;line-height:1.5;color:var(--muted);margin:0}
@@ -765,7 +766,7 @@ html[data-presentation=team] .matrix-cat{color:#596777}
 @media screen and (max-width:767.98px){.matrix-entry-open{display:grid}.header-tools{gap:8px}}
 @media screen and (max-width:350px){.team-brand-logo{width:140px}.matrix-entry-shell{padding-inline:16px;gap:8px}.matrix-choices{gap:8px}.matrix-pill-choice{padding-inline:8px}.matrix-pill-choice strong{font-size:.8125rem}}
 @media screen and (max-height:680px){.matrix-entry-shell{padding-block:12px;gap:8px}.matrix-kicker{display:none}.matrix-entry-heading h2{font-size:1.25rem}.matrix-pill-choice{min-height:72px;padding:8px}.matrix-pill-choice>span:last-child{display:none}.matrix-entry-bottom .matrix-cat{height:32px}}
-@keyframes matrix-invert{0%{filter:invert(0)}23%{filter:invert(1)}60%{filter:invert(1)}100%{filter:invert(0)}}
+@keyframes matrix-context{0%,100%{opacity:1}24%,65%{opacity:.85}}
 @keyframes matrix-shutter{0%{opacity:0;clip-path:inset(0 100% 0 0)}24%{opacity:1;clip-path:inset(0)}70%{opacity:1;clip-path:inset(0)}100%{opacity:0;clip-path:inset(0 0 0 100%)}}
 @keyframes matrix-cat-pass{from{left:-80px;transform:translateY(0)}50%{transform:translateY(-2px)}to{left:100%;transform:translateY(0)}}
 @keyframes matrix-choice-nudge{0%,45%,100%{transform:translateY(0);opacity:.7}15%,30%{transform:translateY(3px);opacity:1}}

@@ -260,6 +260,7 @@ const matrixMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 const matrixMobile=window.matchMedia('(max-width:767.98px)');
 const matrixEntry=document.querySelector('.matrix-intro');
 const matrixOverlay=document.querySelector('[data-matrix-overlay]');
+const matrixOverlayHome=matrixOverlay.parentNode;
 let matrixBusy=false,matrixFrame=0,matrixTimers=[],matrixCommit=null,matrixFinish=null;
 const matrixWords={
  ru:{name:'Алексей Саава',kicker:'Выбор за вами',title:'Одна задача.<br>Два пути к решению.',personal:'Мой опыт',team:'Решения команды',personalNote:'Кейсы и работа со мной',teamNote:'Команда под ваш проект',note:'Формат можно сменить в любой момент.',credit:'Цифровой портрет · по моему фото',close:'Открыть мой опыт',entry:'Выбрать формат',cat:'Знакомый кот? Открыть пасхалку',dejavu:'Дежавю. Тот же кот. Новый контекст.'},
@@ -285,33 +286,39 @@ function matrixRain(){
  const context=canvas.getContext('2d');if(!context)return;
  const width=window.innerWidth,height=window.innerHeight,ratio=Math.min(window.devicePixelRatio||1,1.5);
  canvas.width=Math.round(width*ratio);canvas.height=Math.round(height*ratio);context.scale(ratio,ratio);
- context.fillStyle='#020a05';context.fillRect(0,0,width,height);
+ const theme=window.getComputedStyle(matrixOverlay);
+ const palette={background:theme.getPropertyValue('--bg').trim(),code:theme.getPropertyValue('--accent').trim(),head:theme.getPropertyValue('--text').trim()};
+ context.globalAlpha=1;context.fillStyle=palette.background;context.fillRect(0,0,width,height);
  const size=18,columns=Math.min(90,Math.ceil(width/size)),spacing=width/columns;
  const drops=Array.from({length:columns},()=>Math.random()*height/size),glyphs='01アイウエカキクサシスセソタチツナニハヒフミムメモラリル';
  context.font='14px ui-monospace,monospace';let last=0;
  function draw(time){
   if(!matrixBusy||document.hidden||matrixMotion.matches)return;
   if(time-last>34){
-   last=time;context.fillStyle='rgba(2,10,5,.16)';context.fillRect(0,0,width,height);
-   drops.forEach((drop,i)=>{context.fillStyle=i%5===0?'#d3ffe0':'#58d58a';context.fillText(glyphs[Math.floor(Math.random()*glyphs.length)],i*spacing,drop*size);drops[i]=drop*size>height?0:drop+.7;});
+   last=time;context.globalAlpha=.16;context.fillStyle=palette.background;context.fillRect(0,0,width,height);context.globalAlpha=1;
+   drops.forEach((drop,i)=>{context.fillStyle=i%5===0?palette.head:palette.code;context.fillText(glyphs[Math.floor(Math.random()*glyphs.length)],i*spacing,drop*size);drops[i]=drop*size>height?0:drop+.7;});
   }
   matrixFrame=requestAnimationFrame(draw);
  }
  matrixFrame=requestAnimationFrame(draw);
 }
+function restoreMatrixOverlay(){if(matrixOverlay.parentNode!==matrixOverlayHome)matrixOverlayHome.appendChild(matrixOverlay);}
 function matrixCleanup(){
  matrixTimers.forEach(clearTimeout);matrixTimers=[];cancelAnimationFrame(matrixFrame);matrixFrame=0;
  document.documentElement.classList.remove('matrix-shifting');matrixOverlay.classList.remove('is-running','is-dejavu');matrixOverlay.hidden=true;
+ restoreMatrixOverlay();
  document.querySelector('[data-mode-switch]').removeAttribute('aria-busy');matrixBusy=false;matrixCommit=null;matrixFinish=null;
 }
 function matrixTransition(commit,{mode=presentationMode(),dejavu=false,onFinish=()=>{}}={}){
  if(matrixBusy)return false;
  if(matrixMotion.matches||document.hidden){commit();onFinish();return true;}
  matrixBusy=true;matrixFinish=onFinish;let committed=false;
- matrixCommit=()=>{if(!committed){committed=true;commit();}};
+ matrixCommit=()=>{if(!committed){committed=true;commit();if(!matrixEntry.open)restoreMatrixOverlay();}};
  const w=matrixWords[matrixLanguage()];
  document.querySelector('[data-matrix-label]').textContent=dejavu?'DÉJÀ VU':w[mode];
  document.querySelector('[data-matrix-command]').textContent=dejavu?'// MATRIX REWRITE':'// CONTEXT SWITCH';
+ matrixOverlay.dataset.matrixMode=mode==='team'?'team':'personal';
+ if(matrixEntry.open)matrixEntry.appendChild(matrixOverlay);
  matrixOverlay.hidden=false;matrixOverlay.classList.toggle('is-dejavu',dejavu);matrixOverlay.classList.add('is-running');
  document.documentElement.classList.add('matrix-shifting');document.querySelector('[data-mode-switch]').setAttribute('aria-busy','true');
  matrixRain();
@@ -359,6 +366,7 @@ matrixMobile.addEventListener('change',()=>{if(!matrixMobile.matches&&matrixEntr
 window.addEventListener('popstate',()=>{if(matrixBusy)matrixCleanup();if(matrixEntry.open)matrixEntry.close();syncMatrixWords();});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&matrixBusy){event.preventDefault();finishMatrixEarly();}});
 window.addEventListener('hashchange',syncMatrixWords);
+window.addEventListener('resize',()=>{if(matrixBusy){cancelAnimationFrame(matrixFrame);matrixRain();}});
 let matrixPrintEntry=false;
 window.addEventListener('beforeprint',()=>{finishMatrixEarly();matrixPrintEntry=matrixEntry.open;if(matrixEntry.open)matrixEntry.close();});
 window.addEventListener('afterprint',()=>{if(matrixPrintEntry){matrixPrintEntry=false;openMatrixEntry();}});
