@@ -258,9 +258,7 @@ showView({initial:true});
 'use strict';
 const matrixMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 const matrixMobile=window.matchMedia('(max-width:767.98px)');
-const matrixEntry=document.querySelector('.matrix-intro');
 const matrixOverlay=document.querySelector('[data-matrix-overlay]');
-const matrixOverlayHome=matrixOverlay.parentNode;
 let matrixBusy=false,matrixFrame=0,matrixTimers=[],matrixCommit=null,matrixFinish=null;
 const matrixWords={
  ru:{name:'Алексей Саава',kicker:'Выбор за вами',title:'Одна задача.<br>Два пути к решению.',personal:'Мой опыт',team:'Решения команды',personalNote:'Кейсы и работа со мной',teamNote:'Команда под ваш проект',note:'Формат можно сменить в любой момент.',credit:'Цифровой портрет · по моему фото',close:'Открыть мой опыт',entry:'Выбрать формат',cat:'Знакомый кот? Открыть пасхалку',dejavu:'Дежавю. Тот же кот. Новый контекст.'},
@@ -268,16 +266,10 @@ const matrixWords={
 };
 function matrixLanguage(){return document.documentElement.lang==='en'?'en':'ru';}
 function matrixRemember(){try{sessionStorage.setItem('cv-matrix-choice-v1','chosen');}catch{}}
-function matrixChosen(){try{return sessionStorage.getItem('cv-matrix-choice-v1')==='chosen';}catch{return false;}}
 function syncMatrixWords(){
  const w=matrixWords[matrixLanguage()];
- const keys={'entry-name':'name','entry-kicker':'kicker','pill-personal':'personal','pill-team':'team','pill-personal-note':'personalNote','pill-team-note':'teamNote','entry-note':'note','entry-credit':'credit'};
- document.querySelector('[data-entry-hint]').textContent=matrixLanguage()==='ru'?'Выберите таблетку':'Choose a pill';
- document.querySelector('[data-matrix-portrait]').setAttribute('alt',matrixLanguage()==='ru'?'Алексей в образе Морфиуса: очки, кожаный плащ, красная и синяя таблетки':'Alexey as Morpheus: sunglasses, a leather coat, and a red and blue pill');
- for(const [attribute,key] of Object.entries(keys))document.querySelector('[data-'+attribute+']').textContent=w[key];
- document.querySelector('[data-entry-title]').innerHTML=w.title;
- document.querySelector('[data-entry-close]').setAttribute('aria-label',w.close);
- document.querySelector('[data-entry-open]').setAttribute('aria-label',w.entry);
+ const entryLink=document.querySelector('[data-entry-open]');
+ entryLink.setAttribute('aria-label',w.entry);entryLink.href='enter.html?lang='+matrixLanguage();
  document.querySelectorAll('[data-matrix-cat]').forEach(button=>button.setAttribute('aria-label',w.cat));
  document.querySelector('[data-dejavu-note]').textContent=w.dejavu;
 }
@@ -302,23 +294,20 @@ function matrixRain(){
  }
  matrixFrame=requestAnimationFrame(draw);
 }
-function restoreMatrixOverlay(){if(matrixOverlay.parentNode!==matrixOverlayHome)matrixOverlayHome.appendChild(matrixOverlay);}
 function matrixCleanup(){
  matrixTimers.forEach(clearTimeout);matrixTimers=[];cancelAnimationFrame(matrixFrame);matrixFrame=0;
  document.documentElement.classList.remove('matrix-shifting');matrixOverlay.classList.remove('is-running','is-dejavu');matrixOverlay.hidden=true;
- restoreMatrixOverlay();
  document.querySelector('[data-mode-switch]').removeAttribute('aria-busy');matrixBusy=false;matrixCommit=null;matrixFinish=null;
 }
 function matrixTransition(commit,{mode=presentationMode(),dejavu=false,onFinish=()=>{}}={}){
  if(matrixBusy)return false;
  if(matrixMotion.matches||document.hidden){commit();onFinish();return true;}
  matrixBusy=true;matrixFinish=onFinish;let committed=false;
- matrixCommit=()=>{if(!committed){committed=true;commit();if(!matrixEntry.open)restoreMatrixOverlay();}};
+ matrixCommit=()=>{if(!committed){committed=true;commit();}};
  const w=matrixWords[matrixLanguage()];
  document.querySelector('[data-matrix-label]').textContent=dejavu?'DÉJÀ VU':w[mode];
  document.querySelector('[data-matrix-command]').textContent=dejavu?'// MATRIX REWRITE':'// CONTEXT SWITCH';
  matrixOverlay.dataset.matrixMode=mode==='team'?'team':'personal';
- if(matrixEntry.open)matrixEntry.appendChild(matrixOverlay);
  matrixOverlay.hidden=false;matrixOverlay.classList.toggle('is-dejavu',dejavu);matrixOverlay.classList.add('is-running');
  document.documentElement.classList.add('matrix-shifting');document.querySelector('[data-mode-switch]').setAttribute('aria-busy','true');
  matrixRain();
@@ -326,11 +315,10 @@ function matrixTransition(commit,{mode=presentationMode(),dejavu=false,onFinish=
  matrixTimers.push(setTimeout(()=>{matrixCommit?.();matrixCleanup();onFinish();},940));
  return true;
 }
-function requestPresentation(next,{fromIntro=false,animate=true}={}){
+function requestPresentation(next,{animate=true}={}){
  if(matrixBusy)return;
  const lang=matrixLanguage();
  const apply=()=>{
-  if(matrixEntry.open)matrixEntry.close();
   const url=new URL(location.href);
   if(next==='team')url.searchParams.set('view','team');else url.searchParams.delete('view');
   url.hash=lang+(next==='team'?'-team-cv':'');
@@ -338,23 +326,12 @@ function requestPresentation(next,{fromIntro=false,animate=true}={}){
   matrixRemember();showView({keepModeFocus:true});syncMatrixWords();
  };
  const finish=()=>{
-  const target=fromIntro?document.querySelector('#'+lang+' .'+(next==='team'?'team':'personal')+'-presentation h1'):document.querySelector(matrixMobile.matches?'[data-mobile-menu-open]':'[data-mode-switch]');
+  const target=document.querySelector(matrixMobile.matches?'[data-mobile-menu-open]':'[data-mode-switch]');
   target?.focus({preventScroll:true});
   document.querySelector('[data-matrix-live]').textContent=matrixWords[lang][next];
  };
  if(animate)matrixTransition(apply,{mode:next,onFinish:finish});else{apply();finish();}
 }
-function openMatrixEntry(){
- if(matrixBusy||matrixEntry.open)return;
- syncMatrixWords();
- const img=document.querySelector('[data-matrix-portrait]');if(!img.hasAttribute('src')){if(img.dataset.srcset)img.srcset=img.dataset.srcset;img.src=img.dataset.src;}
- if(typeof matrixEntry.showModal==='function')matrixEntry.showModal();else return;
- document.querySelector('[data-entry-title]').focus({preventScroll:true});
-}
-document.querySelector('[data-entry-open]').addEventListener('click',openMatrixEntry);
-document.querySelectorAll('[data-entry-choice]').forEach(button=>button.addEventListener('click',()=>requestPresentation(button.dataset.entryChoice,{fromIntro:true})));
-document.querySelector('[data-entry-close]').addEventListener('click',()=>requestPresentation('personal',{fromIntro:true,animate:false}));
-matrixEntry.addEventListener('cancel',event=>{event.preventDefault();requestPresentation('personal',{fromIntro:true,animate:false});});
 document.querySelectorAll('[data-matrix-cat]').forEach(button=>button.addEventListener('click',()=>{
  const finish=()=>{const note=document.querySelector('[data-dejavu-note]');note.hidden=false;document.querySelector('[data-matrix-live]').textContent=matrixWords[matrixLanguage()].dejavu;button.focus({preventScroll:true});};
  matrixTransition(()=>{},{dejavu:true,onFinish:finish});
@@ -362,17 +339,12 @@ document.querySelectorAll('[data-matrix-cat]').forEach(button=>button.addEventLi
 function finishMatrixEarly(){if(matrixBusy){const finish=matrixFinish;matrixCommit?.();matrixCleanup();finish?.();}}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)finishMatrixEarly();});
 matrixMotion.addEventListener('change',()=>{if(matrixMotion.matches)finishMatrixEarly();});
-matrixMobile.addEventListener('change',()=>{if(!matrixMobile.matches&&matrixEntry.open)requestPresentation(presentationMode(),{animate:false});});
-window.addEventListener('popstate',()=>{if(matrixBusy)matrixCleanup();if(matrixEntry.open)matrixEntry.close();syncMatrixWords();});
+window.addEventListener('popstate',()=>{if(matrixBusy)matrixCleanup();syncMatrixWords();});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&matrixBusy){event.preventDefault();finishMatrixEarly();}});
 window.addEventListener('hashchange',syncMatrixWords);
 window.addEventListener('resize',()=>{if(matrixBusy){cancelAnimationFrame(matrixFrame);matrixRain();}});
-let matrixPrintEntry=false;
-window.addEventListener('beforeprint',()=>{finishMatrixEarly();matrixPrintEntry=matrixEntry.open;if(matrixEntry.open)matrixEntry.close();});
-window.addEventListener('afterprint',()=>{if(matrixPrintEntry){matrixPrintEntry=false;openMatrixEntry();}});
+window.addEventListener('beforeprint',finishMatrixEarly);
 syncMatrixWords();
-const matrixStartURL=new URL(location.href);
-if(matrixMobile.matches&&!matrixStartURL.searchParams.has('view')&&['','#ru','#en'].includes(matrixStartURL.hash)&&!matrixChosen())openMatrixEntry();
 
 'use strict';
 const mobileCVMedia=matchMedia('(max-width:767.98px)');
