@@ -10,7 +10,7 @@
  };
  const icons={play:'<path d="M8 5l11 7-11 7z" fill="currentColor" stroke="none"/>',pause:'<path d="M9 5v14M15 5v14" stroke="currentColor" stroke-width="3"/>',next:'<path d="M9 5l7 7-7 7"/>',retry:'<path d="M20 7v5h-5M19 12a7 7 0 1 1-2-5"/>'};
  const canvas=$('[data-aircat-board]'),action=$('[data-aircat-action]'),stage=$('[data-aircat-stage]'),levelDetails=$('[data-aircat-levels]'),error=$('[data-aircat-error]');
- $('[data-aircat-title]').textContent=words.title;document.title=words.title+' · Алексей Саава';
+ $('[data-aircat-title]').textContent=words.title;document.title=words.title+' · '+(lang==='en'?'Alexey Savostyuk':'Алексей Савостюк');
  $('[data-aircat-rules]').textContent=words.rules;$('[data-aircat-help]').textContent=words.help+' '+words.hard;
  $('[data-aircat-restart-label]').textContent=words.restart;$('[data-aircat-restart]').setAttribute('aria-label',words.restart);
  $('[data-aircat-retry]').textContent=words.retry;levelDetails.setAttribute('aria-label',words.select);

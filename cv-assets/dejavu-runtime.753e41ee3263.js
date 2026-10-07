@@ -113,7 +113,7 @@
   function updateUI() {
     if(!elements || !state)return;
     const copy=words[lang],status=state.status;
-    elements.title.textContent=copy.title;document.title=copy.title+' · '+(mode==='team'?'Stacklevel':lang==='en'?'Alexey Saava':'Алексей Саава');
+    elements.title.textContent=copy.title;document.title=copy.title+' · '+(mode==='team'?'Stacklevel':lang==='en'?'Alexey Savostyuk':'Алексей Савостюк');
     elements.score.textContent=copy.score+' '+state.score;elements.best.textContent=copy.best+' '+best;
     elements.card.hidden=status==='running';
     elements.result.textContent=!context?copy.unavailable:status==='paused'?copy.pause:status==='over'?copy.over:status==='won'?copy.won:'';

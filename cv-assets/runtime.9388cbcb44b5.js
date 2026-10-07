@@ -82,8 +82,8 @@ let currentView = null;
 const returnPositions = new Map();
 const roots = ['ru','en'].map(lang => document.getElementById(lang));
 const text = {
-  ru:{name:'Алексей Саава',title:'Алексей Саава | B2B-проекты, сайты и CRM',description:'Руководитель B2B-проектов. Сайты, CRM и автоматизация: портфолио, компетенции и формат работы.',nav:['Портфолио','Компетенции','Как работаю'],print:'Печать / PDF',skip:'Перейти к содержанию',cases:'кейсов',automations:'автоматизаций',found:'Найдено материалов: ',solutions:'решений'},
-  en:{name:'Alexey Saava',title:'Alexey Saava | B2B Projects, Websites & CRM',description:'B2B Project Lead. Websites, CRM and automation: projects, skills and ways of working.',nav:['Portfolio','Skills','How I work'],print:'Print / PDF',skip:'Skip to content',cases:'project cases',automations:'automations',found:'Materials found: ',solutions:'solutions'}
+  ru:{name:'Алексей Савостюк',title:'Алексей Савостюк | B2B-проекты, сайты и CRM',description:'Руководитель B2B-проектов. Сайты, CRM и автоматизация: портфолио, компетенции и формат работы.',nav:['Портфолио','Компетенции','Как работаю'],print:'Печать / PDF',skip:'Перейти к содержанию',cases:'кейсов',automations:'автоматизаций',found:'Найдено материалов: ',solutions:'решений'},
+  en:{name:'Alexey Savostyuk',title:'Alexey Savostyuk | B2B Projects, Websites & CRM',description:'B2B Project Lead. Websites, CRM and automation: projects, skills and ways of working.',nav:['Portfolio','Skills','How I work'],print:'Print / PDF',skip:'Skip to content',cases:'project cases',automations:'automations',found:'Materials found: ',solutions:'solutions'}
 };
 const searchableText = new WeakMap();
 roots.forEach(root => root.querySelectorAll('[data-route]').forEach(card => searchableText.set(card,buildSearchIndex(card.textContent + ' ' + card.dataset.tags + ' ' + card.dataset.searchTerms))));
@@ -261,8 +261,8 @@ const matrixMobile=window.matchMedia('(max-width:767.98px)');
 const matrixOverlay=document.querySelector('[data-matrix-overlay]');
 let matrixBusy=false,matrixFrame=0,matrixTimers=[],matrixCommit=null,matrixFinish=null;
 const matrixWords={
- ru:{name:'Алексей Саава',kicker:'Выбор за вами',title:'Одна задача.<br>Два пути к решению.',personal:'Мой опыт',team:'Решения команды',personalNote:'Кейсы и работа со мной',teamNote:'Команда под ваш проект',note:'Формат можно сменить в любой момент.',credit:'Цифровой портрет · по моему фото',close:'Открыть мой опыт',entry:'Выбрать формат',cat:'Знакомый кот? Открыть пасхалку',dejavu:'Дежавю. Тот же кот. Новый контекст.'},
- en:{name:'Alexey Saava',kicker:'The choice is yours',title:'One challenge.<br>Two paths to a solution.',personal:'My experience',team:'Team solutions',personalNote:'My cases and project delivery',teamNote:'A team that fits your project',note:'You can change the format at any time.',credit:'Digital portrait · based on my photo',close:'Open my experience',entry:'Choose a format',cat:'A familiar cat? Discover the Easter egg',dejavu:'Déjà vu. The same cat. A new context.'}
+ ru:{name:'Алексей Савостюк',kicker:'Выбор за вами',title:'Одна задача.<br>Два пути к решению.',personal:'Мой опыт',team:'Решения команды',personalNote:'Кейсы и работа со мной',teamNote:'Команда под ваш проект',note:'Формат можно сменить в любой момент.',credit:'Цифровой портрет · по моему фото',close:'Открыть мой опыт',entry:'Выбрать формат',cat:'Знакомый кот? Открыть пасхалку',dejavu:'Дежавю. Тот же кот. Новый контекст.'},
+ en:{name:'Alexey Savostyuk',kicker:'The choice is yours',title:'One challenge.<br>Two paths to a solution.',personal:'My experience',team:'Team solutions',personalNote:'My cases and project delivery',teamNote:'A team that fits your project',note:'You can change the format at any time.',credit:'Digital portrait · based on my photo',close:'Open my experience',entry:'Choose a format',cat:'A familiar cat? Discover the Easter egg',dejavu:'Déjà vu. The same cat. A new context.'}
 };
 function matrixLanguage(){return document.documentElement.lang==='en'?'en':'ru';}
 function matrixRemember(){try{sessionStorage.setItem('cv-matrix-choice-v1','chosen');}catch{}}

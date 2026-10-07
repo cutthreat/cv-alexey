@@ -82,8 +82,8 @@ let currentView = null;
 const returnPositions = new Map();
 const roots = ['ru','en'].map(lang => document.getElementById(lang));
 const text = {
-  ru:{name:'Алексей Саава',title:'Алексей Саава | B2B-проекты, сайты и CRM',description:'Руководитель B2B-проектов. Сайты, CRM и автоматизация: портфолио, компетенции и формат работы.',nav:['Портфолио','Компетенции','Как работаю'],print:'Печать / PDF',skip:'Перейти к содержанию',cases:'кейсов',automations:'автоматизаций',found:'Найдено материалов: ',solutions:'решений'},
-  en:{name:'Alexey Saava',title:'Alexey Saava | B2B Projects, Websites & CRM',description:'B2B Project Lead. Websites, CRM and automation: projects, skills and ways of working.',nav:['Portfolio','Skills','How I work'],print:'Print / PDF',skip:'Skip to content',cases:'project cases',automations:'automations',found:'Materials found: ',solutions:'solutions'}
+  ru:{name:'Алексей Савостюк',title:'Алексей Савостюк | B2B-проекты, сайты и CRM',description:'Руководитель B2B-проектов. Сайты, CRM и автоматизация: портфолио, компетенции и формат работы.',nav:['Портфолио','Компетенции','Как работаю'],print:'Печать / PDF',skip:'Перейти к содержанию',cases:'кейсов',automations:'автоматизаций',found:'Найдено материалов: ',solutions:'решений'},
+  en:{name:'Alexey Savostyuk',title:'Alexey Savostyuk | B2B Projects, Websites & CRM',description:'B2B Project Lead. Websites, CRM and automation: projects, skills and ways of working.',nav:['Portfolio','Skills','How I work'],print:'Print / PDF',skip:'Skip to content',cases:'project cases',automations:'automations',found:'Materials found: ',solutions:'solutions'}
 };
 const searchableText = new WeakMap();
 roots.forEach(root => root.querySelectorAll('[data-route]').forEach(card => searchableText.set(card,buildSearchIndex(card.textContent + ' ' + card.dataset.tags + ' ' + card.dataset.searchTerms))));
